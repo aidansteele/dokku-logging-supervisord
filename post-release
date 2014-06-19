@@ -2,11 +2,15 @@
 APP="$1"
 IMAGE="dokku/$1"
 SCALE_FILE="$DOKKU_ROOT/$APP/SCALE"
+NAME_FILE="$DOKKU_ROOT/$APP/NAME"
 
 set -e
 
 PLUGIN_DIR=$(dirname $0)
 . "$PLUGIN_DIR/lib/helpers"
+
+echo "$APP" > $NAME_FILE
+copy_to_container "$NAME_FILE" /NAME
 
 copy_to_container "$PLUGIN_DIR/lib/procfile-to-supervisord" /build/procfile-to-supervisord
 if [ -f "$SCALE_FILE" ]; then
